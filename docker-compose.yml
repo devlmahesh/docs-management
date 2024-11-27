@@ -1,0 +1,36 @@
+version: '3.9'
+services:
+  app:
+    image: node:16
+    container_name: nestjs-app
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=development
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=password12345
+      - DATABASE_NAME=document_backend
+    depends_on:
+      - db
+    command: bash -c "npm install && npm run start:dev"
+
+  db:
+    image: postgres:14
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password12345
+      POSTGRES_DB: document_backend
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
