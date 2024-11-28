@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { Role } from './role.enum';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -33,7 +34,8 @@ describe('AuthController', () => {
       const userDto = {
         username: 'testuser',
         password: 'password123',
-        role: 'USER',
+        role: Role.ADMIN,
+        email: 'testuser@gmail.com',
       };
       const result = { id: 1, ...userDto, password: 'hashedpassword' };
 

@@ -39,6 +39,8 @@ describe('UserController', () => {
         username: 'testuser',
         password: 'password123',
         role: Role.VIEWER,
+        email: 'testuser@example.com', // Ensure email is included
+        documents: [], // Ensure documents is included
       };
 
       // Define the created user object, including the missing fields that are expected in the final response

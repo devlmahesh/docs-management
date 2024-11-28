@@ -6,13 +6,13 @@ export class IngestionService {
   constructor(private readonly httpService: HttpService) {}
 
   async triggerIngestion(url: string, payload: any) {
-    // Example usage of HttpService
+    // get trigger Ingest
     const response = await this.httpService.axiosRef.post(url, payload);
     return response.data;
   }
 
   async trackIngestionStatus(url: string) {
-    // Example usage of HttpService
+    // get the the status of the running Ingest
     const response = await this.httpService.axiosRef.get(url);
     return response.data;
   }

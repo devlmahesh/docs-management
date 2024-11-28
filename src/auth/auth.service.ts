@@ -4,6 +4,7 @@ import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
 import { UnauthorizedException, ConflictException } from '@nestjs/common';
 import { CreateUserDto } from '../user/dto/create-user.dto';
+import { UserLoginDto } from './dto/user-login.dto';
 
 @Injectable()
 export class AuthService {
@@ -28,7 +29,7 @@ export class AuthService {
   }
 
   // Login user
-  async login(userDto: any) {
+  async login(userDto: UserLoginDto) {
     const user = await this.userService.findOne(userDto.username);
     if (!user) {
       throw new UnauthorizedException('User not found');

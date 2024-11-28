@@ -4,6 +4,7 @@ import { Roles } from '../auth/roles.decorator';
 import { Role } from '../auth/role.enum';
 import { UseGuards } from '@nestjs/common';
 import { RolesGuard } from '../auth/roles.guard';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('users')
 @UseGuards(RolesGuard) // Protect all user routes with the RolesGuard
@@ -12,12 +13,12 @@ export class UserController {
 
   @Post()
   @Roles(Role.ADMIN)
-  create(@Body() createUserDto) {
+  create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 
   @Get()
-  @Roles(Role.EDITOR) // Only accessible by ADMIN users
+  @Roles(Role.ADMIN)
   findAll() {
     return this.userService.findAll();
   }

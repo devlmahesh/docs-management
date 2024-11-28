@@ -7,27 +7,31 @@ import { AuthModule } from './auth/auth.module';
 import { User } from './user/entities/user.entity';
 import { Document } from './document/entities/document.entity';
 import { Ingestion } from './ingestion/entities/ingestion.entity';
-import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './auth/jwt.guard';
-import { JwtService } from '@nestjs/jwt';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { AppInterceptor } from './app.interceptor';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'db',
-      port: 5432,
-      username: 'postgres',
-      password: 'password12345',
-      database: 'document_backend',
+      host: process.env.DATABASE_HOST,
+      port: +process.env.DATABASE_PORT,
+      username: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_NAME,
       entities: [User, Document, Ingestion],
-      synchronize: true,
+      synchronize: Boolean(process.env.SYNCHRONIZE),
     }),
     UserModule,
     DocumentModule,
     IngestionModule,
     AuthModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AppInterceptor,
+    },
+  ],
 })
 export class AppModule {}

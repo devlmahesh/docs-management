@@ -22,12 +22,12 @@ export class UserService {
     return this.userRepository.findOne({ where: { username } });
   }
 
-  // Get all users (Admin only)
+  // Get all users by Admin only
   async findAll() {
-    return this.userRepository.find();
+    return this.userRepository.find({});
   }
 
-  // Update user role (Admin only)
+  // Update user role by Admin only
   async updateRole(id: number, role: Role) {
     const user = await this.userRepository.findOne({ where: { id } });
     user.role = role;
