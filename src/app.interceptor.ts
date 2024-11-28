@@ -1,42 +1,42 @@
 import {
   CallHandler,
   ExecutionContext,
-  Inject,
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import * as express from 'express';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 export interface Response<T> {
   code: number;
   message: string;
   data: T | any[];
 }
+
 @Injectable()
-export class AppInterceptor<T>
-  implements NestInterceptor<T, Response<T | any[]>>
+export class AppInterceptor<T extends Record<string, any>>
+  implements NestInterceptor<T, Response<T>>
 {
   intercept(
     context: ExecutionContext,
     next: CallHandler,
   ): Observable<Response<T>> {
-    const req: express.Request = context.switchToHttp().getRequest();
-    const response = context.switchToHttp().getResponse();
+    const httpResponse = context.switchToHttp().getResponse();
+
     return next.handle().pipe(
       map((data) => ({
-        code: data?.code
-          ? data.code
-          : context.switchToHttp().getResponse().statusCode,
-        message: data?.['message'] ? data['message'] : 'Success',
-        data: Array.isArray(data) ? data : this.removeMessageKey(data),
+        code: data?.code ?? httpResponse.statusCode,
+        message: data?.message ?? 'Success',
+        data: Array.isArray(data) ? data : this.cleanResponse(data),
       })),
     );
   }
 
-  private removeMessageKey(data: T): T | null {
-    data['code'] ? delete data?.['code'] : null;
-    data['message'] ? delete data?.['message'] : null;
-    console.log('--- sending response:', data);
-    return Object.keys(data).length > 0 ? data : null;
+  private cleanResponse(data: T): T | null {
+    if (data && typeof data === 'object') {
+      const { code, message, ...rest } = data as Record<string, any>;
+      return Object.keys(rest).length > 0 ? (rest as T) : null;
+    }
+    return null;
   }
 }

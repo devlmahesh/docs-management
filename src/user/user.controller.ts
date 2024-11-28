@@ -12,13 +12,13 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN) //only admin can create new user
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 
   @Get()
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN) //only admin can fetch all users
   findAll() {
     return this.userService.findAll();
   }

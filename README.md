@@ -32,42 +32,39 @@
 $ npm install
 ```
 
-## Running the app
+## Running the app with docker
+
+```bash
+$ docker-compose up --build
+## go to swagger UI on
+ http://localhost:3000/api
+```
+
+## Running the app with postgres already install and setup
 
 ```bash
 # development
-$ npm run start
+## create .env file in root directory
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+NODE_ENV=development
+DATABASE_HOST=db
+DATABASE_PORT=5432
+DATABASE_USER=postgres
+DATABASE_PASSWORD=password12345
+DATABASE_NAME=document_backend
+SYNCHRONIZE=true
+UPLOADS_FOLDER=./uploads
 ```
-
-## Test
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+# run this to start the app
+$ npm run start
 ```
 
-## Support
+## To run the cases run
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+$ npm run test
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+``
+```

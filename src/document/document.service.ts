@@ -11,16 +11,15 @@ export class DocumentService {
     @InjectRepository(Document) private documentRepo: Repository<Document>,
   ) {}
 
-  async uploadDocument(file: Express.Multer.File) {
+  async uploadDocument(file: Express.Multer.File, user: User) {
     const document = new Document();
-    document.filename = file.filename;
-    document.path = file.path;
-    document.description = 'Test document'; // Add description (or set it dynamically)
-    document.user = new User(); // Mock or fetch user (set user as required)
-    document.createdAt = new Date(); // Set createdAt date
-    document.updatedAt = null; // Set updatedAt (nullable)
-
-    return this.documentRepo.save(document); // Save the complete document
+    document.filename = file.originalname;
+    document.path = `uploads/${file.filename}`;
+    document.description = 'Test document';
+    document.user = user;
+    document.createdAt = new Date();
+    document.updatedAt = null;
+    return this.documentRepo.save(document);
   }
 
   async getAllDocuments() {

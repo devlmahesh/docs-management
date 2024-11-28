@@ -22,6 +22,11 @@ export class UserService {
     return this.userRepository.findOne({ where: { username } });
   }
 
+  // Find user by user id
+  async findOneById(id: number) {
+    return this.userRepository.findOne({ where: { id } });
+  }
+
   // Get all users by Admin only
   async findAll() {
     return this.userRepository.find({});
